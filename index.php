@@ -1,10 +1,13 @@
 <!DOCTYPE html>
-<html>
-    <head>
-        <meta charset="UTF-8">
-        <title>Lector de rss usando PHP</title>
-        <link rel="stylesheet" href="css/styles.css">
-    </head>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" href="img/rss.png" type="image/x-icon">
+    <title>Lector de feed</title>
+</head>
     <body>
         <!--formulario para añadir la URL a leer-->
         <div class="content">
@@ -13,7 +16,7 @@
             </form>
     <?php
         //URL a leer por defecto
-        $url = "https://e00-marca.uecdn.es/rss/futbol/america.xml";
+        $url = "http://feeds.weblogssl.com/xataka2";
         if(isset($_POST['submit'])){
             if($_POST['feedurl'] != ''){
                 $url = $_POST['feedurl'];
@@ -25,8 +28,8 @@
             $feeds = simplexml_load_file($url);
         }else{
             $invalidurl = true;
-            echo "<h2>URL de feed RSS incorrecto.</h2>";
-            echo "<h3>No te olvides de incluir el protocolo http(s)</h3>";
+            echo '<h2>URL de feed RSS incorrecto.</h2>';
+            echo '<h3>No te olvides de incluir el protocolo http(s)</h3>';
         }
         $i=0;
         //Comprobamos si la URL está vacía. Continúa si no está vacía. De lo contrario pasa al else.
@@ -44,26 +47,26 @@
                 $pubDate = date('D, d M Y',strtotime($postDate));
                 // 5 es el número de noticias a mostrar
                 if($i>=5) break;
-        ?>
-                <!--contruimos cada una de las noticias-->
-                <div class="post">
-                    <div class="post-head">
-                        <!--Título de la noticia-->
-                        <h2><a class="feed_title" href="<?php echo $link; ?>"><?php echo $title; ?></a></h2>
-                        <span><?php echo $pubDate; ?></span> <!--Fecha de la publicación-->
-                    </div>
-                    <!-- Cuerpo de la noticia-->
-                    <div class="post-content">
-                        <?php echo implode(' ', array_slice(explode(' ', $description), 0, 20)) . "..."; ?> <a href="<?php echo $link; ?>">Leer más</a> <!-- botón leer más. Con enlace a la noticia-->
-                    </div>
-                </div>
-                <?php
+        
+                //contruimos cada una de las noticias
+                echo '<div class="post">';
+                echo '<div class="post-head">';
+                //Título de la noticia
+                echo '<h2><a class="feed_title" href="'.$link.'">'.$title.'</a></h2>';
+                echo '<span>'.$link.'</span>';
+                echo '</div>';
+                //Cuerpo de la noticia
+                echo '<div class="post-content">';
+                echo implode(' ', array_slice(explode(' ', $description), 0, 20)) . "...";
+                echo '<a href="'.$link.'">Leer más</a>';
+                echo '</div>';
+                echo '</div>';
                 $i++;
             }
         }else{
             //Error que se muestra si no hay nada que mostrar
             if(!$invalidurl){
-                echo "<h2>No se encontró nada que mostrar</h2>";
+                echo '<h2>No se encontró nada que mostrar</h2>';
             }
         }
     ?>
