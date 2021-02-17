@@ -1,20 +1,20 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="shortcut icon" href="img/rss.png" type="image/x-icon">
-    <title>Lector de feed</title>
+    <title>Lector de feeds</title>
 </head>
     <body>
         <!--formulario para añadir la URL a leer-->
-        <div class="content">
-            <form method="post" action="">
-                <input type="text" name="feedurl" placeholder="Escribe una URL del FEED">&nbsp;<input type="submit" value="Enviar" name="submit">
+        <div>
+            <form method="POST" action="">
+                <input type="text" name="feedurl" placeholder="Escribe el feeds">&nbsp;<input type="submit" value="Enviar" name="submit">
             </form>
-    <?php
+        <?php
         //URL a leer por defecto
         $url = "http://feeds.weblogssl.com/xataka2";
         if(isset($_POST['submit'])){
@@ -34,30 +34,31 @@
         $i=0;
         //Comprobamos si la URL está vacía. Continúa si no está vacía. De lo contrario pasa al else.
         if(!empty($feeds)){
+            //Descripción del canal
             $site = $feeds->channel->title;
             $sitelink = $feeds->channel->link;
-            //Título de la página
-            echo "<h1>".$site."</h1>";
+            echo '<h1>'.$site.'</h1>';
+            //Por cada noticia:
             foreach ($feeds->channel->item as $item) {
-                //Datos obtenidos de la noticia
+                //Creamos variables con información de la noticia
                 $title = $item->title;
                 $link = $item->link;
                 $description = $item->description;
                 $postDate = $item->pubDate;
                 $pubDate = date('D, d M Y',strtotime($postDate));
-                // 5 es el número de noticias a mostrar
-                if($i>=5) break;
+                if($i>=5) break; //5 es el número de noticias a mostrar
         
-                //contruimos cada una de las noticias
-                echo '<div class="post">';
-                echo '<div class="post-head">';
+                //Mostramos información por pantalla de la noticia
+                echo '<div>';
+                echo '<div>';
                 //Título de la noticia
-                echo '<h2><a class="feed_title" href="'.$link.'">'.$title.'</a></h2>';
-                echo '<span>'.$link.'</span>';
+                echo '<h2><a href="'.$link.'">'.$title.'</a></h2>';
+                echo '<span>'.$pubDate.'</span>';
                 echo '</div>';
                 //Cuerpo de la noticia
-                echo '<div class="post-content">';
-                echo implode(' ', array_slice(explode(' ', $description), 0, 20)) . "...";
+                echo '<div>';
+                //echo implode(' ', array_slice(explode(' ', $description), 0, 20)) . "...";
+                echo '<div>'.$description.'</div>';
                 echo '<a href="'.$link.'">Leer más</a>';
                 echo '</div>';
                 echo '</div>';
@@ -69,7 +70,7 @@
                 echo '<h2>No se encontró nada que mostrar</h2>';
             }
         }
-    ?>
+        ?>
         </div>
     </body>
 </html>
